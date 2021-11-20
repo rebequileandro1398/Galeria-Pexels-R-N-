@@ -1,12 +1,14 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, Image } from 'react-native'
 
-const Image = () => {
+const Img = ({ route }) => {
+    const{image} = route.params
+
     return (
         <View>
-            <Text>Image</Text>
+            <Image source={{uri: image.src.medium, height: 350}}/>
         </View>
     )
 }
 
-export default Image
+export default Img
