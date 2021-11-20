@@ -15,6 +15,7 @@ export default function App() {
         <Stack.Screen name='HomeScreen' component={Home}/>
         <Stack.Screen name='ImageScreen' component={Image}/>
       </Stack.Navigator>
+      <StatusBar/>
     </NavigationContainer>
   );
 }
