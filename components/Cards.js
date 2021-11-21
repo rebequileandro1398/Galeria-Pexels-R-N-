@@ -9,8 +9,8 @@ const Cards = ({image}) => {
 
     return (
         <TouchableOpacity style={styles.cardImage} onPress={()=> navigation.navigate('ImageScreen', { image })}>
-            <Image style={styles.img} source={{uri: image.src.small 
-            ? image.src.small
+            <Image style={styles.img} source={{uri: image.src.medium 
+            ? image.src.medium
             : 'https://acorepuestos.cl/imagenes/productos/sinFoto.jpg'}} style={{height: 130, width: '100%'}}/>
         </TouchableOpacity>
     )

@@ -26,7 +26,9 @@ export default function App() {
           >
             {(props)=> <Home {...props} openSearch={openSearch}/>}
           </Stack.Screen>
-        <Stack.Screen name='ImageScreen' component={Img}/>
+        <Stack.Screen name='ImageScreen' component={Img}
+          options={{ title: 'Pex App', headerTitleStyle:{ color: '#fff'}, headerStyle:{ backgroundColor: '#334756'},}}
+        />
       </Stack.Navigator>
       <StatusBar/>
     </NavigationContainer>
