@@ -5,22 +5,42 @@ import { getApi } from '../api/pexels'
 import download from '../assets/download.png'
 import * as WebBrowser from 'expo-web-browser';
 import ImageList from '../components/ImageList'
-
+import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
 
 const Img = ({ route }) => {
 
     const{image} = route.params
 
+    let url = image.url
+    let keywords = url.split('/')
+    let similar = keywords[4].split('-')
+
     const [photos, setPhotos] = useState([])
-    const loadImage = async () => {
-        const res = await getApi();
+    const loadImage = async (data) => {
+        const res = await getApi(data);
         setPhotos(res.data.photos)
     }
-    useEffect(() => {loadImage()},[])
+    useEffect(() => {loadImage(similar[0], similar[1], similar[2], similar[3])},[])
 
 
     const handleProfile = async () => await WebBrowser.openBrowserAsync(image.photographer_url)
-    
+
+    const downloadFile = async () => {
+       let fileUri = FileSystem.documentDirectory + image.id + '.jpeg'
+       const {uri} = await FileSystem.downloadAsync(image.src.large2x, fileUri)
+       saveFile(uri)
+    }
+    const saveFile = async (uri) => {
+       const {status} = await MediaLibrary.requestPermissionsAsync()
+       if(status === 'granted') {
+          const asset = await MediaLibrary.createAssetAsync(uri)
+          await MediaLibrary.createAlbumAsync('Download', asset, false)
+       }
+    }
+    const handleDownload = () => {
+        downloadFile()
+    }
 
     return (
         <View style={styles.container}>
@@ -32,7 +52,7 @@ const Img = ({ route }) => {
                         <Text style={{color: '#fff', marginLeft: 10, fontSize: 18}}>{image.photographer}</Text>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={() => alert('desea guardar esta imagen en su dispositivo?')}>
+                <TouchableOpacity onPress={() => handleDownload()}>
                     <Image source={download} style={{ width: 35, height: 35,  marginEnd: 9 }}/>
                 </TouchableOpacity>
             </View>
